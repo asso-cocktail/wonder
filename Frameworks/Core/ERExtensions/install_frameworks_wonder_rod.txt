@@ -1,0 +1,2 @@
+Install des frameworks wonder:
+ant frameworks; sudo ant frameworks.install
