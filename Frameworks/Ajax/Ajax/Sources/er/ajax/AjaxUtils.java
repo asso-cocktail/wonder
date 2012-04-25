@@ -76,6 +76,7 @@ public class AjaxUtils {
 				response.setHeaders(existingResponse.headers());
 				response.setUserInfo(existingResponse.userInfo());
 				response.appendContentString(existingResponse.contentString());
+				response.setStatus(existingResponse.status());
 			}
 		}
 		if (response == null) {
