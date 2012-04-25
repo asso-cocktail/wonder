@@ -12,7 +12,7 @@ import er.extensions.eof.ERXConstant;
 public class Ajax extends ERXFrameworkPrincipal {
 	public static Class[] REQUIRES = new Class[0];
 	public static final Logger log = Logger.getLogger(Ajax.class);
-	
+	//test1
 	
     static {
         setUpFrameworkPrincipalClass(Ajax.class);
