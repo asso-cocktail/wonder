@@ -42,6 +42,10 @@ import com.webobjects.foundation.NSMutableArray;
  * <td>The LI representing the selected tab(s) and the A element that is the clickable title.</td>
  * </tr>
  * <tr>
+ * <td>ajaxTabbedPanelTab-disabled</td>
+ * <td>The LI representing the disabled tab(s).</td>
+ * </tr>
+ * <tr>
  * <td>ajaxTabbedPanelPanes</td>
  * <td>The UL containing the panels (panes).</td>
  * </tr>
@@ -151,56 +155,62 @@ public class AjaxTabbedPanel extends AjaxDynamicElement {
             AjaxTabbedPanelTab tab = (AjaxTabbedPanelTab)tabs.objectAtIndex(i);
             if (tab.isVisble(component)) {
 	            boolean isSelectedTab = tab.isSelected(context.component());
+	            boolean isDisabledTab = tab.isDisabled(context.component());
 	            String panelTabID = (String) tab.id().valueInComponent(component);
 	            String panelID = panelTabID + "_panel";
 	            response.appendContentString("  <li class=\"ajaxTabbedPanelTab-");
 	            response.appendContentString(isSelectedTab ? "selected" : "unselected");
+	            response.appendContentString(isDisabledTab ? " ajaxTabbedPanelTab-disabled" : "");
 	            response.appendContentString("\" ");
 	            appendTagAttributeToResponse(response, "id", tabID);
 	            response.appendContentString(">\n");
-	            response.appendContentString("<a ");
-	            
-	            //add the accesskey
-	            if( tab.accesskey() != null ){
-	            	String accessKeyStr = tab.accesskey().valueInComponent(component).toString();
-	            	appendTagAttributeToResponse(response, "accesskey", accessKeyStr );
+	            if(!isDisabledTab) {
+		            response.appendContentString("<a ");
+		            
+		            //add the accesskey
+		            if( tab.accesskey() != null ){
+		            	String accessKeyStr = tab.accesskey().valueInComponent(component).toString();
+		            	appendTagAttributeToResponse(response, "accesskey", accessKeyStr );
+		            }
+		            
+		            appendTagAttributeToResponse(response, "id", panelTabID);
+		            response.appendContentString(" href=\"javascript:void(0)\" onclick=\"");
+		
+		            // Load the tab contents
+		            response.appendContentString("AjaxTabbedPanel.loadPanel('");
+		            response.appendContentString(idString);
+		            response.appendContentString("', '");
+		            response.appendContentString(panelID);
+		            response.appendContentString("', '");
+		            response.appendContentString((busyDiv != null) ? (String)busyDiv.valueInComponent(component) : "");
+		            response.appendContentString("', ");
+		            response.appendContentString(tab.refreshesOnSelect(context.component()).toString());
+		            response.appendContentString("); ");
+		            
+		            // Select the tab contents
+		            response.appendContentString("AjaxTabbedPanel.selectPanel('");
+		            response.appendContentString(paneControlID);
+		            response.appendContentString("', '");
+		            response.appendContentString(panelID);
+		            response.appendContentString("'); ");
+		            
+		            // Select the tab control
+		            response.appendContentString("AjaxTabbedPanel.selectTab('");
+		            response.appendContentString(idString);
+		            response.appendContentString("', '");
+		            response.appendContentString(tabID);
+		            response.appendContentString("', '");
+		            response.appendContentString(panelID);
+		            response.appendContentString("', '");
+		            response.appendContentString((busyDiv != null) ? (String)busyDiv.valueInComponent(component) : "");
+		            response.appendContentString("'); ");
+		            
+		            response.appendContentString("\">");
+		            response.appendContentString((String) tab.name().valueInComponent(component));
+		            response.appendContentString("</a>\n");
+	            } else {
+	            	response.appendContentString("<span>"+(String) tab.name().valueInComponent(component)+"</span>");
 	            }
-	            
-	            appendTagAttributeToResponse(response, "id", panelTabID);
-	            response.appendContentString(" href=\"javascript:void(0)\" onclick=\"");
-	
-	            // Load the tab contents
-	            response.appendContentString("AjaxTabbedPanel.loadPanel('");
-	            response.appendContentString(idString);
-	            response.appendContentString("', '");
-	            response.appendContentString(panelID);
-	            response.appendContentString("', '");
-	            response.appendContentString((busyDiv != null) ? (String)busyDiv.valueInComponent(component) : "");
-	            response.appendContentString("', ");
-	            response.appendContentString(tab.refreshesOnSelect(context.component()).toString());
-	            response.appendContentString("); ");
-	            
-	            // Select the tab contents
-	            response.appendContentString("AjaxTabbedPanel.selectPanel('");
-	            response.appendContentString(paneControlID);
-	            response.appendContentString("', '");
-	            response.appendContentString(panelID);
-	            response.appendContentString("'); ");
-	            
-	            // Select the tab control
-	            response.appendContentString("AjaxTabbedPanel.selectTab('");
-	            response.appendContentString(idString);
-	            response.appendContentString("', '");
-	            response.appendContentString(tabID);
-	            response.appendContentString("', '");
-	            response.appendContentString(panelID);
-	            response.appendContentString("', '");
-	            response.appendContentString((busyDiv != null) ? (String)busyDiv.valueInComponent(component) : "");
-	            response.appendContentString("'); ");
-	            
-	            response.appendContentString("\">");
-	            response.appendContentString((String) tab.name().valueInComponent(component));
-	            response.appendContentString("</a>\n");
 	            response.appendContentString("</li>\n");
             }
         }

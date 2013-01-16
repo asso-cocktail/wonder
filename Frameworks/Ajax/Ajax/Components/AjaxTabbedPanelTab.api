@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <wodefinitions>
 	<wo class="AjaxTabbedPanelTab.java" wocomponentcontent="true">
         <binding name="name"/>
@@ -7,7 +7,8 @@
         <binding defaults="Boolean" name="refreshOnSelect"/>
         <binding name="onLoad"/>
         <binding defaults="Boolean" name="isVisible"/>
-   	<binding name=" accesskey"/>
+   		<binding name=" accesskey"/>
+    	<binding defaults="Boolean" name="isDisabled"/>
     </wo>
 	
 		

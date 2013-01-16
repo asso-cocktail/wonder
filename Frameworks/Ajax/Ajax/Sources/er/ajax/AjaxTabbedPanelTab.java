@@ -29,6 +29,7 @@ import com.webobjects.foundation.NSDictionary;
  *          time the tab is selected.  Defaults to false
  * @binding onLoad optional, String JavaScript to execute after the tab loads
  * @binding isVisible optional, default is true, indicates if tab and panel should be displayed
+ * @binding disabled optional, default is false, indicates if tab and panel should be disabled
  * @binding accesskey optional, The accesskey for this tab
  *
  * @author Chuck Hill
@@ -42,6 +43,7 @@ public class AjaxTabbedPanelTab extends AjaxDynamicElement {
     private WOAssociation refreshOnSelect;
     private WOAssociation onLoad;
     private WOAssociation isVisible;
+    private WOAssociation isDisabled;
     private WOAssociation accesskey;
 
 
@@ -55,6 +57,7 @@ public class AjaxTabbedPanelTab extends AjaxDynamicElement {
         refreshOnSelect = (WOAssociation) associations.objectForKey("refreshOnSelect");
         onLoad = (WOAssociation) associations.objectForKey("onLoad");
         isVisible = (WOAssociation) associations.objectForKey("isVisible");
+        isDisabled = (WOAssociation) associations.objectForKey("isDisabled");
         accesskey = (WOAssociation)associations.objectForKey("accesskey");
         
         if (name == null) {
@@ -68,6 +71,7 @@ public class AjaxTabbedPanelTab extends AjaxDynamicElement {
     public void appendToResponse(WOResponse aResponse, WOContext aContext)
     {
     	WOComponent component = aContext.component();
+    	
     	if (isVisble(component)) {
             aResponse.appendContentString("<li id=\"");
             aResponse.appendContentString((String)id().valueInComponent(component) + "_panel");
@@ -217,6 +221,15 @@ public class AjaxTabbedPanelTab extends AjaxDynamicElement {
      */
     public boolean isVisble(WOComponent component) {
         return (isVisible != null) ? ((Boolean)isVisible.valueInComponent(component)).booleanValue() : true;
+    }
+    
+    /**
+     * Returns current component's value for the disabled binding.
+     * @param component the component this is being rendered in
+     * @return Boolean value for isDisabled binding, Boolean.FALSE if unset
+     */
+    public boolean isDisabled(WOComponent component) {
+        return (isDisabled != null) ? ((Boolean)isDisabled.valueInComponent(component)).booleanValue() : false;
     }
     
     /**
