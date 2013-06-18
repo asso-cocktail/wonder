@@ -47,7 +47,10 @@ public class AjaxUtils {
 
 	/**
 	 * Return whether or not the given request is an Ajax request.
+	 * 
 	 * @param request the request the check
+	 * 
+	 * @return if it an Ajax request the <code>true</code> 
 	 */
 	public static boolean isAjaxRequest(WORequest request) {
 		return ERXAjaxApplication.isAjaxRequest(request);
@@ -62,7 +65,9 @@ public class AjaxUtils {
 	 * keep-alive and flags it as a Ajax request by adding an AJAX_REQUEST_KEY header. You can check this header in the
 	 * session to decide if you want to save the request or not.
 	 * 
-	 * @param context
+	 * @param request the current request
+	 * @param context the current context
+	 * @return a new Ajax response
 	 */
 	public static AjaxResponse createResponse(WORequest request, WOContext context) {
 		AjaxResponse response = null;
@@ -102,16 +107,24 @@ public class AjaxUtils {
 	 * already one.
 	 * 
 	 * @param message
+	 * @deprecated use {@link er.extensions.appserver.ERXWOContext#contextDictionary()} instead
 	 */
+	@Deprecated
 	public static NSMutableDictionary mutableUserInfo(WOMessage message) {
 		return ERXWOContext.contextDictionary();
 	}
 
 	/**
-	 * Adds a script tag with a correct resource url in the html head tag if it isn't already present in the response.
+	 * Adds a script tag with a correct resource URL in the HTML head tag if it isn't already present in the response.
 	 * 
+	 * @param context
+	 *            the context
 	 * @param response
+	 *            the response
+	 * @param framework
+	 *            the framework that contains the file
 	 * @param fileName
+	 *            the name of the javascript file to add
 	 */
 	public static void addScriptResourceInHead(WOContext context, WOResponse response, String framework, String fileName) {
 		String processedFileName = fileName;
@@ -123,21 +136,44 @@ public class AjaxUtils {
 	}
 
 	/**
-	 * Calls ERXWOContext.addScriptResourceInHead with "Ajax" framework
+	 * Calls {@link #addScriptResourceInHead(WOContext, WOResponse, String, String)} with "Ajax" as framework.
+	 * 
+	 * @param context
+	 *            the context
+	 * @param response
+	 *            the response
+	 * @param fileName
+	 *            the name of the javascript file to add
 	 */
 	public static void addScriptResourceInHead(WOContext context, WOResponse response, String fileName) {
 		AjaxUtils.addScriptResourceInHead(context, response, "Ajax", fileName);
 	}
 
 	/**
-	 * Calls ERXWOContext.addStylesheetResourceInHead
+	 * Calls {@link er.extensions.appserver.ERXResponseRewriter#addStylesheetResourceInHead(WOResponse, WOContext, String, String)}
+	 * 
+	 * @param context
+	 *            the context
+	 * @param response
+	 *            the response
+	 * @param framework
+	 *            the framework that contains the file
+	 * @param fileName
+	 *            the name of the CSS file to add
 	 */
 	public static void addStylesheetResourceInHead(WOContext context, WOResponse response, String framework, String fileName) {
 		ERXResponseRewriter.addStylesheetResourceInHead(response, context, framework, fileName);
 	}
 
 	/**
-	 * Calls ERXWOContext.addStylesheetResourceInHead with "Ajax" framework
+	 * Calls {@link #addStylesheetResourceInHead(WOContext, WOResponse, String, String)} with "Ajax" as framework.
+	 * 
+	 * @param context
+	 *            the context
+	 * @param response
+	 *            the response
+	 * @param fileName
+	 *            the name of the CSS file to add
 	 */
 	public static void addStylesheetResourceInHead(WOContext context, WOResponse response, String fileName) {
 		AjaxUtils.addStylesheetResourceInHead(context, response, "Ajax", fileName);
@@ -147,12 +183,16 @@ public class AjaxUtils {
 	 * Adds a reference to an arbitrary file with a correct resource url wrapped between startTag and endTag in the html
 	 * head tag if it isn't already present in the response.
 	 * 
+	 * @param context 
 	 * @param response
+	 * @param framework 
 	 * @param fileName
 	 * @param startTag
 	 * @param endTag
+	 * 
 	 * @deprecated this is not called by anything anymore and does not use the new support for loading-on-demand
 	 */
+	@Deprecated
 	public static void addResourceInHead(WOContext context, WOResponse response, String framework, String fileName, String startTag, String endTag) {
 		ERXResponseRewriter.addResourceInHead(response, context, framework, fileName, startTag, endTag, ERXResponseRewriter.TagMissingBehavior.Top);
 
@@ -178,15 +218,23 @@ public class AjaxUtils {
 	}
 
 	/**
-	 * Calls ERXWOContext.addScriptCodeInHead.
+	 * Calls {@link er.extensions.appserver.ERXResponseRewriter#addScriptCodeInHead(WOResponse, WOContext, String)}.
+	 * 
+	 * @param response
+	 *            the response to write into
+	 * @param context
+	 *            the context
+	 * @param script
+	 *            the javascript code to insert
 	 */
 	public static void addScriptCodeInHead(WOResponse response, WOContext context, String script) {
 		ERXResponseRewriter.addScriptCodeInHead(response, context, script);
 	}
 
 	/**
-	 * @deprecated replaced by ERXStringUtilities.safeIdentifierName
+	 * @deprecated use {@link er.extensions.foundation.ERXStringUtilities#safeIdentifierName(String)}
 	 */
+	@Deprecated
 	public static String toSafeElementID(String elementID) {
 		return ERXStringUtilities.safeIdentifierName(elementID);
 	}
@@ -204,17 +252,34 @@ public class AjaxUtils {
 		return shouldHandleRequest;
 	}
 
+	/**
+	 * <span class="ja">
+	 * ユーザ・インフォメーション・ディクショナリーにページキャシュを保存しないことを登録します。
+	 * 
+	 * @param context - WOContext
+	 * </span>
+	 * @deprecated use {@link er.extensions.appserver.ajax.ERXAjaxApplication#enableShouldNotStorePage()} instead
+	 */
+	@Deprecated
 	public static void updateMutableUserInfoWithAjaxInfo(WOContext context) {
 		AjaxUtils.updateMutableUserInfoWithAjaxInfo(context.response());
 	}
 
+	/**
+	 * <span class="ja">
+	 * ユーザ・インフォメーション・ディクショナリーにページキャシュを保存しないことを登録します。
+	 * 
+	 * @param message - WOMessage
+	 * </span>
+	 * @deprecated use {@link er.extensions.appserver.ajax.ERXAjaxApplication#enableShouldNotStorePage()} instead
+	 */
+	@Deprecated
 	public static void updateMutableUserInfoWithAjaxInfo(WOMessage message) {
-		NSMutableDictionary dict = AjaxUtils.mutableUserInfo(message);
-		dict.takeValueForKey(ERXAjaxSession.DONT_STORE_PAGE, ERXAjaxSession.DONT_STORE_PAGE);
+		ERXWOContext.contextDictionary().takeValueForKey(ERXAjaxSession.DONT_STORE_PAGE, ERXAjaxSession.DONT_STORE_PAGE);
 	}
 
 	/**
-	 * Returns an AjaxResponse with the given javascript as the body of the response.
+	 * Returns an {@link er.ajax.AjaxResponse} with the given javascript as the body of the response.
 	 * 
 	 * @param context the WOContext
 	 * @param javascript the javascript to send
@@ -262,13 +327,7 @@ public class AjaxUtils {
 	}
 
 	public static void appendScriptHeader(WOResponse response) {
-		boolean appendTypeAttribute = ERXProperties.booleanForKeyWithDefault("er.extensions.ERXResponseRewriter.javascriptTypeAttribute", false);
-		if (appendTypeAttribute) {
-			response.appendContentString("<script type=\"text/javascript\">");
-		}
-		else {
-			response.appendContentString("<script>");
-		}
+		ERXResponseRewriter.appendScriptTagOpener(response);
 	}
 
 	public static void appendScriptFooterIfNecessary(WORequest request, WOResponse response) {
@@ -278,17 +337,29 @@ public class AjaxUtils {
 	}
 
 	public static void appendScriptFooter(WOResponse response) {
-		response.appendContentString("</script>");
+		ERXResponseRewriter.appendScriptTagCloser(response);
 	}
 
+	/**
+	 * @deprecated use {@link er.extensions.components.ERXComponentUtilities#hasBinding(String, NSDictionary)} instead
+	 */
+	@Deprecated
 	public static boolean hasBinding(String name, NSDictionary<String, WOAssociation> associations) {
 		return associations.objectForKey(name) != null;
 	}
 	
+	/**
+	 * @deprecated use {@link er.extensions.components.ERXComponentUtilities#bindingNamed(String, NSDictionary)} instead
+	 */
+	@Deprecated
 	public static WOAssociation bindingNamed(String name, NSDictionary<String, WOAssociation> associations) {
 		return associations.objectForKey(name);
 	}
 	
+	/**
+	 * @deprecated use {@link er.extensions.components.ERXComponentUtilities#valueForBinding(String, Object, NSDictionary, WOComponent)} instead
+	 */
+	@Deprecated
 	public static Object valueForBinding(String name, Object defaultValue, NSDictionary<String, WOAssociation> associations, WOComponent component) {
 		Object value = AjaxUtils.valueForBinding(name, associations, component);
 		if (value != null) {
@@ -297,6 +368,10 @@ public class AjaxUtils {
 		return defaultValue;
 	}
 	
+	/**
+	 * @deprecated use {@link er.extensions.components.ERXComponentUtilities#stringValueForBinding(String, String, NSDictionary, WOComponent)} instead
+	 */
+	@Deprecated
 	public static String stringValueForBinding(String name, String defaultValue, NSDictionary<String, WOAssociation> associations, WOComponent component) {
 		String value = AjaxUtils.stringValueForBinding(name, associations, component);
 		if (value != null) {
@@ -305,6 +380,10 @@ public class AjaxUtils {
 		return defaultValue;
 	}
 
+	/**
+	 * @deprecated use {@link er.extensions.components.ERXComponentUtilities#stringValueForBinding(String, NSDictionary, WOComponent)} instead
+	 */
+	@Deprecated
 	public static String stringValueForBinding(String name, NSDictionary<String, WOAssociation> associations, WOComponent component) {
 		WOAssociation association = associations.objectForKey(name);
 		if (association != null) {
@@ -313,6 +392,10 @@ public class AjaxUtils {
 		return null;
 	}
 
+	/**
+	 * @deprecated use {@link er.extensions.components.ERXComponentUtilities#valueForBinding(String, NSDictionary, WOComponent)} instead
+	 */
+	@Deprecated
 	public static Object valueForBinding(String name, NSDictionary<String, WOAssociation> associations, WOComponent component) {
 		WOAssociation association = associations.objectForKey(name);
 		if (association != null) {
@@ -321,6 +404,10 @@ public class AjaxUtils {
 		return null;
 	}
 
+	/**
+	 * @deprecated use {@link er.extensions.components.ERXComponentUtilities#booleanValueForBinding(String, boolean, NSDictionary, WOComponent)} instead
+	 */
+	@Deprecated
 	public static boolean booleanValueForBinding(String name, boolean defaultValue, NSDictionary<String, WOAssociation> associations, WOComponent component) {
 		WOAssociation association = associations.objectForKey(name);
 		if (association != null) {
@@ -329,6 +416,10 @@ public class AjaxUtils {
 		return defaultValue;
 	}
 
+	/**
+	 * @deprecated use {@link er.extensions.components.ERXComponentUtilities#setValueForBinding(Object, String, NSDictionary, WOComponent)} instead
+	 */
+	@Deprecated
 	public static void setValueForBinding(Object value, String name, NSDictionary<String, WOAssociation> associations, WOComponent component) {
 		WOAssociation association = associations.objectForKey(name);
 		if (association != null) {

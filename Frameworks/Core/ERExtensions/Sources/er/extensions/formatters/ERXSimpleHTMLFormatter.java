@@ -19,6 +19,12 @@ import er.extensions.foundation.ERXStringUtilities;
  * tab characters to HTML &lt;spacer&gt; tags.
  */
 public class ERXSimpleHTMLFormatter extends java.text.Format {
+	/**
+	 * Do I need to update serialVersionUID?
+	 * See section 5.6 <cite>Type Changes Affecting Serialization</cite> on page 51 of the 
+	 * <a href="http://java.sun.com/j2se/1.4/pdf/serial-spec.pdf">Java Object Serialization Spec</a>
+	 */
+	private static final long serialVersionUID = 1L;
 
     /** logging support */
     public final static Logger log = Logger.getLogger(ERXSimpleHTMLFormatter.class);
@@ -89,6 +95,7 @@ public class ERXSimpleHTMLFormatter extends java.text.Format {
      * @param fp ignored parameter
      * @return buffer after having the format appended to it.
      */
+    @Override
     public StringBuffer format(Object object, StringBuffer buffer, FieldPosition fp) {
         // The value of fp does not matter in this case.
         return buffer.append(applyFormat(object));
@@ -118,6 +125,7 @@ public class ERXSimpleHTMLFormatter extends java.text.Format {
      * @param inString HTML string
      * @return ASCII-fied string
      */
+    @Override
     public Object parseObject(String inString) throws java.text.ParseException {
         String newString;
 
@@ -137,6 +145,7 @@ public class ERXSimpleHTMLFormatter extends java.text.Format {
      * @param p current parsing position
      * @return ASCII representation of the string
      */
+    @Override
     public Object parseObject(String string, ParsePosition p) {
         int index = p.getIndex();
         String substring = string.substring(index);
