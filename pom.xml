@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>wonder</groupId>
     <artifactId>wonder</artifactId>
-    <version>5.4-SNAPSHOT</version>
+    <version>5.5.1.cktl</version>
     <packaging>pom</packaging>
     <name>Project Wonder</name>
     <url>http://wiki.objectstyle.org/confluence/display/WONDER/Home</url>
@@ -673,16 +673,10 @@
 
     <distributionManagement>
         <repository>
-            <id>wocommunity.deployment</id>
-            <name>WOCommunity Maven2 Releases Repository</name>
-            <url>http://maven.wocommunity.org/content/repositories/releases</url>
+            <id>cktl.deployment</id>
+            <name>Cocktail Repository</name>
+            <url>http://nexus.asso-cocktail.org/content/repositories/cocktail/</url>
         </repository>
-        <snapshotRepository>
-            <id>wocommunity.deployment</id>
-            <uniqueVersion>false</uniqueVersion>
-            <name>WOCommunity Maven2 Snapshots Repository</name>
-            <url>http://maven.wocommunity.org/content/repositories/snapshots/</url>
-        </snapshotRepository>
     </distributionManagement>
 
     <scm>
